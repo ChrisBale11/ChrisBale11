@@ -12,7 +12,7 @@ ARCH=$(uname -m)
 
 SAMPLE_IMAGES_PATH="../../"
 
-IMAGE="custom-qemu-developer-regualar.$ARCH.qcow2"
+IMAGE="custom-qemu-developer-regular.$ARCH.qcow2"
 
 DISTRO_PATCH="image-patch.ipp.yml"  # this patch to configure the image
 
