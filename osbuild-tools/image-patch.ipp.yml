@@ -1,0 +1,10 @@
+version: '2'
+dirived_from: 'f40'  # you adjust this parameter to other distro like cs9,autosd,f39,etc.
+mpp-vars:
+  distro_repos:
+    - id: custom
+      baseurl: http://192.168.201.21:8000 
+  extra_rpms:
+    - htop
+    - tmux
+    - hello-world

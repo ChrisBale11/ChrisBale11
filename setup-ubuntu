@@ -1,0 +1,47 @@
+#!/bin/bash
+ 
+# suppose qemu-system-aarch64 are available on ubuntu
+# or run this command : sudo apt install qemu-system-aarch64
+
+rm -rf workspace
+mkdir -p workspace
+cd workspace
+
+# download the pre-built AutoSD images 
+echo "Download the  pre-built AutoSD image:" 
+wget https://autosd.sig.centos.org/AutoSD-9/nightly/sample-images/auto-osbuild-qemu-autosd9-developer-regular-x86_64-1320386583.3a304e91.qcow2.xz
+unxz -k auto-osbuild*.xz
+
+# Create the script for booting image
+cat > runVM <<EOF
+#!/bin/bash
+
+file=$1
+disk_img="disk_img.qcow2"
+size=50G
+
+# Check if the disk image exists
+if [ ! -f ${disk_img} ]; then
+    echo "Disk image ${disk_img} does not exist. Creating it..."
+    qemu-img create -f qcow2 ${disk_img} ${size}
+else
+    echo "Disk image ${disk_img} already exists. Skipping creation."
+fi
+
+#sleep 2
+
+# Run the QEMU virtual machine
+qemu-system-aarch64 -nographic -m 4096M -cpu cortex-a57 -smp 4 \
+    -M virt \
+    -netdev user,id=unet -device virtio-net-pci,netdev=unet \
+    -drive file=${file} \
+    -drive file=${disk_img},format=qcow2,if=virtio \
+    -bios /usr/share/qemu-efi-aarch64/QEMU_EFI.fd
+EOF
+
+chmod +x runVM
+
+. runVM *.qcow2
+
+
+

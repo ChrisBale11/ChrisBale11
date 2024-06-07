@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#This script to apply the patch and then create the custome distro
+ARCH=$(uname -m)
+
+SAMPLE_IMAGES_PATH="../../"
+
+IMAGE="custom-qemu-developer-regualar.$ARCH.qcow2"
+
+DISTRO_PATCH="image-patch.ipp.yml"  # this patch to configure the image
+
+DISTRO_PATCH_PATH=$(find $SAMPLE_IMAGES_PATH -name "$DISTRO_PATCH" 2>/dev/null) # path to the patch      # file 2
+
+DERIVED_FROM_DISTRO=$(yq e '.dirived_from' "$DISTRO_PATCH")
+
+DERIVED_FROM_DISTRO_PATH=$(find $SAMPLE_IMAGES_PATH -name "$DERIVED_FROM_DISTRO.ipp.yml" 2>/dev/null) # file 1
+
+DISTRO_PATH=$(dirname "$DERIVED_FROM_DISTRO_PATH") # get the distro path where osbuild get the distro to build
+
+CUSTOM_DISTRO="custom.ipp.yml"
+
+CUSTOM_DISTRO_PATH=$DISTRO_PATH/$CUSTOM_DISTRO
+
+python3 apply-patch.py -o $CUSTOM_DISTRO_PATH $DERIVED_FROM_DISTRO_PATH $DISTRO_PATCH_PATH
+
+cd ../
+
+make $IMAGE
+

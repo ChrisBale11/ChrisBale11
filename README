@@ -1,0 +1,76 @@
+# this is folder containing tools for building AutoSD using osbuild
+# type of this build is non-crosscompile.
+# it means you must run on the host that have similar architecture with the target board
+
+# Follow these step for setting up the environment and then starting the build
+# In this example
+<!-----------------------------------------------------------
+Step 1: 
+run this script to initilize the host
+
+$ . setup-ubuntu 
+
+This script will download the pre-built image on online repo and then it will be booted on qemu-system-aarch64
+-------------------------------------------------------------
+Step 2:
+
+wait for a few minutes for booting
+login to it as;
+
+login as : root
+Password : password 
+
+after the booting is completed, ping your host on qemu using this command : ping <ip address>
+using scp tool to copy the scripts into image
+scp <host's username>@<host's ip address>:<path to osbuild-tools> . 
+-------------------------------------------------------------
+Step 3:
+run the setup-env script to set up build env 
+after running completed
+the current path is /data. it contain sample-images folder which are cloned from gitlab 
+
+-------------------------------------------------------------
+Step 4: 
+
+$ ls -1
+sample-images # it was clonned from gitlab
+osbuild-tools # it was copied from ubuntu host
+
+osbuild-tools/
+├── image-patch.ipp.yml # this file is used to configure the image
+├── build-custom-image  # this file build the custome image
+└── apply-patch.py      # apply the configure from image-patch file
+
+# you can adjust image-patch.ipp.yml
+
+$ chmod +x osbuild-tools/*
+
+$ cp osbuild-tools/* sample-images/osbuild-manifests/tools/
+
+$ cd sample-images/osbuild-manifests/tools/
+
+$ . build-custome-image
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-->
+
+
+
+
+
+
+

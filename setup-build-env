@@ -1,0 +1,100 @@
+#===============================================================================
+# This script is used to set up te environment after the booting is completed! =
+# Author: Duy Tong                                                             =
+#===============================================================================
+
+
+#!/bin/bash
+
+# Function to check if user agrees to mount the disk
+confirm_mount() {
+    read -r -p "Do you want to mount the disk to /data? (y/n): " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        return 0  # Return success
+    else
+        return 1  # Return failure
+    fi
+}
+
+# Check if script is run as root
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Please run this script as root."
+    exit 1
+fi
+
+# Function to check internet connection
+check_internet() {
+    wget -q --spider http://google.com
+    if [ $? -eq 0 ]; then
+        echo "Internet connection is available."
+    else
+        echo "No internet connection. Please check your connection and try again."
+        exit 1
+    fi
+}
+
+# Function to find an unmounted disk
+find_unmounted_disk() {
+    for disk in $(lsblk -dno NAME,TYPE | grep disk | awk '{print $1}'); do
+        if ! mount | grep -q "/dev/$disk"; then
+            echo "/dev/$disk"
+            return
+        fi
+    done
+    echo ""
+}
+
+# Check internet connection
+check_internet
+
+# List block devices
+lsblk
+
+# Find an unmounted disk
+disk=$(find_unmounted_disk)
+if [ -z "$disk" ]; then
+    echo "No unmounted disk found."
+    exit 1
+else
+    echo "Unmounted disk found: $disk"
+fi
+
+# Format the disk with ext4 filesystem
+mkfs.ext4 "$disk"
+
+# Create a mount point directory
+mkdir -p /data
+
+# Ask for permission before mounting
+if confirm_mount; then
+    # Mount the disk to /data
+    mount "$disk" /data
+    # Save the mounting in /etc/fstab to persist across reboots
+    echo "$disk /data ext4 defaults 0 0" >> /etc/fstab
+    echo "Mount is completed!"
+else
+    echo "Mounting cancelled by user."
+    exit 1
+fi
+
+# Enable required COPR repositories
+dnf update
+dnf install 'dnf command(copr)'
+
+dnf copr enable @osbuild/osbuild-stable -y
+dnf copr enable @centos-automotive-sig/osbuild-auto -y
+
+echo "Enable required COPR repositories is completed!"
+
+# Install required packages
+dnf install osbuild osbuild-auto osbuild-ostree osbuild-tools -y
+
+# Change to /data directory
+cd /data
+
+# Clone the sample-images repository with submodules
+git clone --recurse-submodule https://gitlab.com/CentOS/automotive/sample-images.git
+
+# Print success message
+echo "Environment setup complete."
+
