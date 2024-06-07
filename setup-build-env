@@ -95,6 +95,18 @@ cd /data
 # Clone the sample-images repository with submodules
 git clone --recurse-submodule https://gitlab.com/CentOS/automotive/sample-images.git
 
+git clone https://github.com/ChrisBale11/osbuild.git -b v.0.1
+
+ls -1
+
+sleep 3
+
+chmod +x -R osbuild/osbuild-tools/
+
+cp osbuild/osbuild-tools/* sample-images/osbuild-manifests/tools
+
+cd sample-images/osbuild-manifests/tools
+
 # Print success message
 echo "Environment setup complete."
 
