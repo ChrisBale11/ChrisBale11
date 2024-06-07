@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# install modules for python
+dnf install python3-pip
+
+pip3 install pyyaml
+
+pip3 install ruamel.yaml
+
 #This script to apply the patch and then create the custome distro
 ARCH=$(uname -m)
 
@@ -11,7 +18,22 @@ DISTRO_PATCH="image-patch.ipp.yml"  # this patch to configure the image
 
 DISTRO_PATCH_PATH=$(find $SAMPLE_IMAGES_PATH -name "$DISTRO_PATCH" 2>/dev/null) # path to the patch      # file 2
 
-DERIVED_FROM_DISTRO=$(yq e '.dirived_from' "$DISTRO_PATCH")
+cat > get-dirived-from-distro.py << EOF
+import sys
+import yaml
+
+def extract_dirived_from(yaml_file):
+    with open(yaml_file, 'r') as stream:
+        data = yaml.safe_load(stream)
+    return data.get('dirived_from')
+
+if __name__ == "__main__":
+    yaml_file = sys.argv[1]
+    dirived_from = extract_dirived_from(yaml_file)
+    print(dirived_from)
+EOF
+
+DERIVED_FROM_DISTRO=$(python3 get-dirived-from-distro.py "$DISTRO_PATCH")
 
 DERIVED_FROM_DISTRO_PATH=$(find $SAMPLE_IMAGES_PATH -name "$DERIVED_FROM_DISTRO.ipp.yml" 2>/dev/null) # file 1
 
@@ -23,7 +45,12 @@ CUSTOM_DISTRO_PATH=$DISTRO_PATH/$CUSTOM_DISTRO
 
 python3 apply-patch.py -o $CUSTOM_DISTRO_PATH $DERIVED_FROM_DISTRO_PATH $DISTRO_PATCH_PATH
 
+echo "Applying the patch is completed!"
+
 cd ../
 
-make $IMAGE
+echo "Build $IMAGE"
 
+echo "make $IMAGE"
+
+make $IMAGE
