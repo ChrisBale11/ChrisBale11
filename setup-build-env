@@ -79,7 +79,7 @@ fi
 
 # Enable required COPR repositories
 dnf update
-dnf install 'dnf command(copr)'
+dnf install 'dnf-command(copr)'
 
 dnf copr enable @osbuild/osbuild-stable -y
 dnf copr enable @centos-automotive-sig/osbuild-auto -y
