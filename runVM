@@ -1,0 +1,24 @@
+#!/bin/bash
+
+file=$1
+disk_img="disk_img.qcow2"
+size=50G
+
+# Check if the disk image exists
+if [ ! -f ${disk_img} ]; then
+    echo "Disk image ${disk_img} does not exist. Creating it..."
+    qemu-img create -f qcow2 ${disk_img} ${size}
+else
+    echo "Disk image ${disk_img} already exists. Skipping creation."
+fi
+
+#sleep 2
+
+# Run the QEMU virtual machine
+qemu-system-aarch64 -nographic -m 4096M -cpu cortex-a57 -smp 4 \
+    -M virt \
+    -netdev user,id=unet -device virtio-net-pci,netdev=unet \
+    -drive file=${file} \
+    -drive file=${disk_img},format=qcow2,if=virtio \
+    -bios /usr/share/qemu-efi-aarch64/QEMU_EFI.fd
+
