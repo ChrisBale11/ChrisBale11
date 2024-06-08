@@ -43,6 +43,8 @@ CUSTOM_DISTRO="custom.ipp.yml"
 
 CUSTOM_DISTRO_PATH=$DISTRO_PATH/$CUSTOM_DISTRO
 
+rm -rf $CUSTOM_DISTRO_PATH
+
 python3 apply-patch.py -o $CUSTOM_DISTRO_PATH $DERIVED_FROM_DISTRO_PATH $DISTRO_PATCH_PATH
 
 echo "Applying the patch is completed!"
