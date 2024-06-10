@@ -22,6 +22,8 @@ Build Tools are scripts used to build a custom image derived from AutoSD.
    Run the following command to download the setup script:
 
    wget https://raw.githubusercontent.com/ChrisBale11/osbuild/v.0.1/setup-ubuntu
+   
+   Place this file in the same directory as the pre-built AutoSD image.
 
 3. **Change the Permissions of the Setup Script**
 
@@ -54,17 +56,21 @@ Build Tools are scripts used to build a custom image derived from AutoSD.
 
     $ . setup-build-env
 
-
 # Configure the image
 
 You can config the image via image-patch.ipp.yml
 ** 
 version: '2'
-dirived_from: 'f40'  <this parameter tell to osbuild the distro will be derived> (eg. cs9, autosd, eln,f39,f40)
+dirived_from: 'f40'  <this parameter tell to osbuild the distro will be derived> (eg. cs9, autosd, eln, f39, f40 )
 mpp-vars:
   distro_repos:
     - id: <id name>
       baseurl: <your repo url>
+    - id: <id name>
+      baseurl: <your repo url 1>
+    ....
+    - id: <id name>
+      baseurl: <your repo url n>
   extra_rpms:       # add your rpms
     - rpm package 1
     - rpm package 2
