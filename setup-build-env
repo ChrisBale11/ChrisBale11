@@ -78,16 +78,27 @@ else
 fi
 
 # Enable required COPR repositories
-dnf update
-dnf install 'dnf-command(copr)'
+
+dnf update -y
+
+dnf install 'dnf-command(copr)' -y
 
 dnf copr enable @osbuild/osbuild-stable -y
 dnf copr enable @centos-automotive-sig/osbuild-auto -y
 
-echo "Enable required COPR repositories is completed!"
+echo "==================================================="
+echo "=                                                 ="
+echo "= Enable required COPR repositories is completed! ="
+echo "=                                                 ="
+echo "==================================================="
+
 
 # Install required packages
-dnf install osbuild osbuild-auto osbuild-ostree osbuild-tools -y
+
+dnf install osbuild -y 
+dnf install osbuild-auto -y
+dnf install osbuild-ostree -y
+dnf install osbuild-tools -y
 
 # Change to /data directory
 cd /data
