@@ -1,13 +1,12 @@
 #!/bin/bash
  
 # suppose qemu-system-aarch64 are available on ubuntu
-# or run this command : sudo apt install qemu-system-aarch64
+# or run this command : sudo apt install qemu-system-aarch64 to install it
 
 rm -rf workspace
+
 mkdir -p  workspace
-
 mv  *qcow2.xz workspace
-
 cd  workspace
 
 unxz -k auto-osbuild*.xz
@@ -17,6 +16,10 @@ unxz -k auto-osbuild*.xz
 wget https://raw.githubusercontent.com/ChrisBale11/osbuild/v.0.1/runVM
 
 chmod +x runVM
+
+echo "Setting up the env is completed !" 
+
+sleep 3
 
 . runVM *.qcow2
 

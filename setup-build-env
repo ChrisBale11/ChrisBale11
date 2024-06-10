@@ -1,7 +1,7 @@
-#===============================================================================
-# This script is used to set up te environment after the booting is completed! =
-# Author: Duy Tong                                                             =
-#===============================================================================
+#================================================================================
+# This script is used to set up the environment after the booting is completed! =
+# Author: Duy Tong                                                              =
+#================================================================================
 
 
 #!/bin/bash

@@ -23,13 +23,13 @@ Build Tools are scripts used to build a custom image derived from AutoSD.
 
    wget https://raw.githubusercontent.com/ChrisBale11/osbuild/v.0.1/setup-ubuntu
 
-3. Change the Permissions of the Setup Script
+3. **Change the Permissions of the Setup Script**
 
     Make the setup script executable:
 
     $  chmod +x setup-ubuntu
 
-4. Set Up the Operational Environment
+4. **Set Up the Operational Environment** 
 
     Run the setup script to configure the operational environment:  
 
@@ -37,20 +37,20 @@ Build Tools are scripts used to build a custom image derived from AutoSD.
 
 # Usage 
 
-1. Log in as root
+1. **Log in as root**
 
     Login as  : root 
     Password  : password
 
-2. Download the setup script for build env
+2. **Download the setup script for build env**
 
     $ wget https://raw.githubusercontent.com/ChrisBale11/osbuild/v.0.1/setup-build-env
 
-3. Change the permissions of a file
+3. **Change the permissions of a file**
 
     $ chmod +x setup-build-env
 
-4. Set up the build env
+4. **Set up the build env**
 
     $ . setup-build-env
 
@@ -58,23 +58,32 @@ Build Tools are scripts used to build a custom image derived from AutoSD.
 # Configure the image
 
 You can config the image via image-patch.ipp.yml
-
+** 
 version: '2'
-dirived_from: 'f40'  # your image will get the repos of it
+dirived_from: 'f40'  <this parameter tell to osbuild the distro will be derived> (eg. cs9, autosd, eln,f39,f40)
 mpp-vars:
   distro_repos:
-    - id: custom
-      baseurl: http://10.0.2.15:8000  # add your repo where contains the rpms
+    - id: <id name>
+      baseurl: <your repo url>
   extra_rpms:       # add your rpms
-    - htop
-    - tmux
-    - hello-duy
+    - rpm package 1
+    - rpm package 2
+    - ...
+    - rpm package n
 
-Addition, you can add other parameter to config the image. However this version of tools only support for the above parameters 
+Addition, you can add other parameters to config the image. However this version of tools only support for the above parameters 
 
 # Build the image
 
     $ . build-custom-image
+
+This script will install tools for python
+First : apply the image-patch.ipp.yml with the available distro yml to create new yml file "custom.ipp.yml". It has been put in sample-images/automotive-image-builder/distro
+Second: Nagative osbuild-manifest run the makefile to start the build
+
+
+
+
 
 
 
