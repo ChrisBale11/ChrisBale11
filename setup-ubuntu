@@ -22,9 +22,9 @@ echo $IMAGE
 
 cd $WORKSPACE
 
-# wget $REPO_URL/$IMAGE 
+wget $REPO_URL/$IMAGE 
 
-# unxz $IMAGE
+unxz $IMAGE
 
 wget https://raw.githubusercontent.com/ChrisBale11/osbuild/v.0.1/runVM
 
@@ -34,7 +34,7 @@ echo "Setting up the env is completed !"
 
 sleep 3
 
-# . runVM *.qcow2
+. runVM *.qcow2
 
 # # To shutdown the qemu-system-aarch64 run this command : shutdown -h now 
 
@@ -60,70 +60,3 @@ else
     echo "Invalid input. Please enter 'y' or 'n'."
 
 fi
-
-
-# # Extract the latest file name using grep and awk (assuming the file names are in the format `auto-osbuild-*.qcow2.xz`)
-# IMAGE=$(echo "$REPO_LISTING" | grep -oP 'auto-osbuild-qemu-developer-regular-${ARCH}*\.*\.${ARCH}\.qcow2\.xz' | sort -r | head -n 1)
-
-# # Construct the URL
-# file_url="$REPO_URL/$IMAGE"
-# echo $file_url
-
-# # Download the file using wget
-# # wget "$file_url"
-
-
-
-
-# if [ -e "$image.xz"]; then
-#     unxz "$image.xz"
-
-# if [ -e "$image" ]; then
-#     mv  $image workspace
-
-# else
-#     echo "cannot find the image"
-#     echo "Please, ensure the image is available"
-
-# cd  workspace
-
-# # Download runVM script
-
-
-# chmod +x runVM
-
-# echo "Setting up the env is completed !" 
-
-# sleep 3
-
-# . runVM *.qcow2
-
-# # To shutdown the qemu-system-aarch64 run this command : shutdown -h now 
-
-# echo "Do you want clean the workspace (y/n) : "
-# read answer
-
-# # Convert the answer to lowercase to handle both 'Y' and 'y'
-# answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
-
-# # Check the user's response
-# if [ "$answer" == "y" ]; then
-
-#     echo "Cleaning the workspace..."
-#     rm -rf ../workspace
-#     echo "Workspace cleaned."
-
-# elif [ "$answer" == "n" ]; then
-
-#     echo "Workspace not cleaned."
-
-# else
-
-#     echo "Invalid input. Please enter 'y' or 'n'."
-
-# fi
-
-
-
-
-
