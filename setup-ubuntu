@@ -2,7 +2,8 @@
  
 # suppose qemu-system-aarch64 are available on ubuntu
 # or run this command : sudo apt install qemu-system-aarch64 to install it
-ARCH=$(uname -m)
+
+ARCH=$(uname -m) # you can change it to aarch64
 WORKSPACE="workspace"
 
 rm -rf $WORKSPACE
@@ -19,8 +20,6 @@ IMAGE=`echo "$REPO_LISTING" | grep -oE "$IMAGE_NAME" | head -n 1`
 
 echo "The image will be downloaded : "
 echo $IMAGE
-
-cd $WORKSPACE
 
 wget $REPO_URL/$IMAGE 
 
